@@ -21,7 +21,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 // Action to copy the selected code snippet
-public class CopyScreenshotKeybind extends DumbAwareAction {
+public class CopyScreenshotAction extends DumbAwareAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
         Project p = e.getProject();
@@ -55,7 +55,7 @@ public class CopyScreenshotKeybind extends DumbAwareAction {
 
                 @NotNull
                 @Override
-                public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+                public Object getTransferData(DataFlavor flavor) {
                     return image;
                 }
             }, (clipboard, contents) -> {

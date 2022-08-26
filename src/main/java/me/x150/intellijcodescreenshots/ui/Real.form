@@ -26,10 +26,10 @@
           <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <maximum value="32"/>
+          <maximum value="16"/>
           <minimum value="1"/>
           <paintLabels value="false"/>
-          <paintTicks value="false"/>
+          <paintTicks value="true"/>
           <paintTrack value="true"/>
           <snapToTicks value="true"/>
           <toolTipText value="The scale multiplier of the image"/>
@@ -52,6 +52,7 @@
           <label value="Remove indentation"/>
           <selected value="true"/>
           <text value="Remove indentation"/>
+          <toolTipText value="Removes the indentation of the selected snippet to be flush with the rest"/>
         </properties>
       </component>
       <component id="d5232" class="javax.swing.JLabel">
@@ -68,6 +69,7 @@
         </constraints>
         <properties>
           <maximum value="64"/>
+          <toolTipText value="The padding between the edge of the window and the start of the code"/>
           <value value="16"/>
         </properties>
       </component>
@@ -76,7 +78,7 @@
           <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="16.0"/>
+          <text value="16"/>
         </properties>
       </component>
       <component id="883ea" class="javax.swing.JLabel">
@@ -93,6 +95,7 @@
         </constraints>
         <properties>
           <maximum value="64"/>
+          <toolTipText value="The padding between the edge of the image and the start of the window"/>
           <value value="16"/>
         </properties>
       </component>
@@ -101,7 +104,7 @@
           <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="16.0"/>
+          <text value="16"/>
         </properties>
       </component>
       <component id="c2128" class="javax.swing.JLabel">
@@ -118,6 +121,7 @@
         </constraints>
         <properties>
           <maximum value="32"/>
+          <toolTipText value="The roundness of the window"/>
           <value value="16"/>
         </properties>
       </component>
@@ -126,7 +130,7 @@
           <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="16.0"/>
+          <text value="16"/>
         </properties>
       </component>
       <component id="28091" class="javax.swing.JCheckBox" binding="showWindowControls">
@@ -137,6 +141,7 @@
           <label value="Show window icons"/>
           <selected value="true"/>
           <text value="Show window icons"/>
+          <toolTipText value="Shows colored icons at the top left of the window, to indicate window controls. Purely cosmetic"/>
         </properties>
       </component>
     </children>

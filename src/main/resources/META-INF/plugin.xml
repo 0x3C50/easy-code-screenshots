@@ -30,8 +30,8 @@
     <depends>com.intellij.modules.platform</depends>
 
     <actions>
-        <action id="me.x150.intellijcodescreenshots.action.CopyScreenshotKeybind"
-                class="me.x150.intellijcodescreenshots.action.CopyScreenshotKeybind" text="Screenshot Selected Code"
+        <action id="me.x150.intellijcodescreenshots.action.CopyScreenshotAction"
+                class="me.x150.intellijcodescreenshots.action.CopyScreenshotAction" text="Screenshot Selected Code"
                 description="Screenshots the selected code snippet">
             <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="CopyAsRichText"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl S"/>

@@ -30,9 +30,9 @@ public class OptionsServiceProvider implements PersistentStateComponent<OptionsS
     public static class State {
         public double scale = 1.5;
         public boolean removeIndentation = true;
-        public double innerPadding = 16;
-        public double outerPaddingHoriz = 8;
-        public double outerPaddingVert = 8;
+        public double innerPadding = 10;
+        public double outerPaddingHoriz = 10;
+        public double outerPaddingVert = 10;
         public int windowRoundness = 20;
         public boolean showWindowControls = true;
 
