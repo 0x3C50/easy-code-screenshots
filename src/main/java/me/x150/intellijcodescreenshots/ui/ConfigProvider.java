@@ -40,7 +40,7 @@ public class ConfigProvider implements SearchableConfigurable, Configurable.NoSc
     @Override
     public boolean isModified() {
         OptionsServiceProvider service = p.getService(OptionsServiceProvider.class);
-        return !service.getState().equals(panel.toState());
+        return panel != null && !service.getState().equals(panel.toState());
     }
 
     @Override
