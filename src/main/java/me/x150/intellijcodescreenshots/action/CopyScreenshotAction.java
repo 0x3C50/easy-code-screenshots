@@ -12,21 +12,20 @@ import me.x150.intellijcodescreenshots.Plugin;
 import me.x150.intellijcodescreenshots.util.ScreenshotBuilder;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
+import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 // Action to copy the selected code snippet
 public class CopyScreenshotAction extends DumbAwareAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
         Project p = e.getProject();
-        if (p == null)
+        if (p == null) {
             return;
+        }
         DataContext context = e.getDataContext();
         Editor editor = PlatformDataKeys.EDITOR.getData(context);
         if (editor == null) {
@@ -45,7 +44,7 @@ public class CopyScreenshotAction extends DumbAwareAction {
             cp.setContents(new Transferable() {
                 @Override
                 public DataFlavor[] getTransferDataFlavors() {
-                    return new DataFlavor[]{DataFlavor.imageFlavor};
+                    return new DataFlavor[] { DataFlavor.imageFlavor };
                 }
 
                 @Override
@@ -60,7 +59,12 @@ public class CopyScreenshotAction extends DumbAwareAction {
                 }
             }, (clipboard, contents) -> {
             });
-            NotificationGroupManager.getInstance().getNotificationGroup("Code Screenshots").createNotification("Image copied", NotificationType.INFORMATION).setTitle("Code screenshots").notify(p);
+            NotificationGroupManager.getInstance()
+                .getNotificationGroup("Code Screenshots")
+                .createNotification("Image copied", NotificationType.INFORMATION)
+                .setTitle("Code screenshots")
+                .setImportant(false)
+                .notify(p);
         }
     }
 
@@ -68,8 +72,9 @@ public class CopyScreenshotAction extends DumbAwareAction {
     @Override
     public void update(@NotNull AnActionEvent e) {
         Project project = e.getProject();
-        if (project == null)
+        if (project == null) {
             return;
+        }
         DataContext context = e.getDataContext();
         Editor editor = PlatformDataKeys.EDITOR.getData(context);
         e.getPresentation().setEnabled(editor != null && editor.getSelectionModel().hasSelection());

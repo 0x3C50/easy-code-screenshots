@@ -1,7 +1,12 @@
 package me.x150.intellijcodescreenshots.util;
 
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.editor.*;
+import com.intellij.openapi.editor.CaretModel;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.Inlay;
+import com.intellij.openapi.editor.SelectionModel;
+import com.intellij.openapi.editor.VisualPosition;
 import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
@@ -12,8 +17,12 @@ import org.apache.commons.imaging.common.ImageBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JComponent;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -79,7 +88,13 @@ public class ScreenshotBuilder {
 
             newTransform.translate(-r.getX(), -r.getY());
 
-            return paint(contentComponent, newTransform, (int) (r.getWidth() * scale), (int) (r.getHeight() * scale), getBackgroundColor(editor, false), options, (int) (options.innerPadding * scale));
+            return paint(contentComponent,
+                newTransform,
+                (int) (r.getWidth() * scale),
+                (int) (r.getHeight() * scale),
+                getBackgroundColor(editor, false),
+                options,
+                (int) (options.innerPadding * scale));
         } catch (Exception e) {
             Logger.getInstance(ImageBuilder.class).error(e);
             return null;
@@ -91,13 +106,18 @@ public class ScreenshotBuilder {
     BufferedImage paint(JComponent contentComponent, AffineTransform at, int width, int height, Color backgroundColor, OptionsServiceProvider.State state, int innerPadding) {
         int outerPaddingHoriMapped = (int) (state.outerPaddingHoriz * state.scale);
         int outerPaddingVertMapped = (int) (state.outerPaddingVert * state.scale);
-        double indicatorDimensions = 16 * state.scale;
-        double indicatorPadding = 6 * state.scale;
-        double heightAdd = (state.showWindowControls) ? (indicatorDimensions + indicatorPadding * 2) : 0;
+        double indicatorDimensions = 10 * state.scale;
+        double windowControlsPadding = 6 * state.scale;
         double scale = JBUIScale.sysScale(contentComponent);
         int paddingX = innerPadding + outerPaddingHoriMapped;
         int paddingY = innerPadding + outerPaddingVertMapped;
-        @SuppressWarnings("UndesirableClassUsage") BufferedImage img = new BufferedImage((int) (width * scale + 2 * outerPaddingHoriMapped + 2 * innerPadding), (int) (height * scale + 2 * outerPaddingVertMapped + innerPadding + Math.max(innerPadding - heightAdd, indicatorPadding) + heightAdd), BufferedImage.TYPE_INT_ARGB);
+
+        double windowControlsHeightWithPadding = windowControlsPadding + indicatorDimensions + windowControlsPadding;
+        double preferredPaddingTopWithIndicators = Math.max(windowControlsHeightWithPadding, innerPadding);
+
+        @SuppressWarnings("UndesirableClassUsage") BufferedImage img = new BufferedImage((int) (outerPaddingHoriMapped + innerPadding + width * scale + innerPadding + outerPaddingHoriMapped),
+            (int) (outerPaddingVertMapped + (state.showWindowControls ? (preferredPaddingTopWithIndicators) : (innerPadding)) + height * scale + innerPadding + outerPaddingVertMapped),
+            BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = img.createGraphics();
         int scaledWidth = (int) (width * scale);
         int scaledHeight = (int) (height * scale);
@@ -108,15 +128,24 @@ public class ScreenshotBuilder {
         g.fillRect(0, 0, imgWidth, imgHeight);
         g.setPaint(backgroundColor);
         int windowRoundness = (int) (state.windowRoundness * state.scale);
-        g.fillRoundRect(outerPaddingHoriMapped, outerPaddingVertMapped, imgWidth - outerPaddingHoriMapped * 2, imgHeight - outerPaddingVertMapped * 2, windowRoundness, windowRoundness);
+        g.fillRoundRect(outerPaddingHoriMapped,
+            outerPaddingVertMapped,
+            imgWidth - outerPaddingHoriMapped * 2,
+            imgHeight - outerPaddingVertMapped * 2,
+            windowRoundness,
+            windowRoundness);
         double xOffset = 0;
-        if (state.showWindowControls)
-            for (JBColor jbColor : new JBColor[]{red, yellow, green}) {
+        if (state.showWindowControls) {
+            for (JBColor jbColor : new JBColor[] { red, yellow, green }) {
                 g.setPaint(jbColor);
-                g.fillOval((int) (outerPaddingHoriMapped + indicatorPadding + xOffset), (int) (outerPaddingVertMapped + indicatorPadding), (int) indicatorDimensions, (int) indicatorDimensions);
-                xOffset += indicatorDimensions + indicatorPadding;
+                g.fillOval((int) (outerPaddingHoriMapped + windowControlsPadding + xOffset),
+                    (int) (outerPaddingVertMapped + windowControlsPadding),
+                    (int) indicatorDimensions,
+                    (int) indicatorDimensions);
+                xOffset += indicatorDimensions + windowControlsPadding;
             }
-        g.translate(paddingX, Math.max(paddingY - heightAdd, indicatorPadding) + heightAdd);
+        }
+        g.translate(paddingX, state.showWindowControls ? (outerPaddingVertMapped + preferredPaddingTopWithIndicators) : (paddingY));
         g.clipRect(0, 0, scaledWidth, scaledHeight);
         g.transform(at);
         contentComponent.paint(g);

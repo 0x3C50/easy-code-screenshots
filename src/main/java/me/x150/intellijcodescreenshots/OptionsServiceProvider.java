@@ -9,7 +9,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@State(name = "CodeScreenshotsOptions", storages = {@Storage(StoragePathMacros.WORKSPACE_FILE)})
+@State(name = "CodeScreenshotsOptions", storages = { @Storage(StoragePathMacros.CACHE_FILE) })
 public class OptionsServiceProvider implements PersistentStateComponent<OptionsServiceProvider.State> {
     State state = new State();
 
@@ -30,33 +30,41 @@ public class OptionsServiceProvider implements PersistentStateComponent<OptionsS
     public static class State {
         public double scale = 1.5;
         public boolean removeIndentation = true;
-        public double innerPadding = 10;
+        public double innerPadding = 16;
         public double outerPaddingHoriz = 10;
         public double outerPaddingVert = 10;
-        public int windowRoundness = 20;
+        public int windowRoundness = 10;
         public boolean showWindowControls = true;
 
         @Override
         public boolean equals(Object o) {
-            if (this == o)
+            if (this == o) {
                 return true;
-            if (o == null || getClass() != o.getClass())
+            }
+            if (o == null || getClass() != o.getClass()) {
                 return false;
+            }
 
             State state = (State) o;
 
-            if (Double.compare(state.scale, scale) != 0)
+            if (Double.compare(state.scale, scale) != 0) {
                 return false;
-            if (removeIndentation != state.removeIndentation)
+            }
+            if (removeIndentation != state.removeIndentation) {
                 return false;
-            if (Double.compare(state.innerPadding, innerPadding) != 0)
+            }
+            if (Double.compare(state.innerPadding, innerPadding) != 0) {
                 return false;
-            if (Double.compare(state.outerPaddingHoriz, outerPaddingHoriz) != 0)
+            }
+            if (Double.compare(state.outerPaddingHoriz, outerPaddingHoriz) != 0) {
                 return false;
-            if (Double.compare(state.outerPaddingVert, outerPaddingVert) != 0)
+            }
+            if (Double.compare(state.outerPaddingVert, outerPaddingVert) != 0) {
                 return false;
-            if (windowRoundness != state.windowRoundness)
+            }
+            if (windowRoundness != state.windowRoundness) {
                 return false;
+            }
             return showWindowControls == state.showWindowControls;
         }
 

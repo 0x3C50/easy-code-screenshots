@@ -2,7 +2,10 @@ package me.x150.intellijcodescreenshots.ui;
 
 import me.x150.intellijcodescreenshots.OptionsServiceProvider;
 
-import javax.swing.*;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
 import java.util.Locale;
 
 public class Real {
@@ -20,9 +23,7 @@ public class Real {
     private JCheckBox showWindowControls;
 
     public void init() {
-        scaleInp.addChangeListener(e -> dataVis.setText(
-                String.format(Locale.ENGLISH, "%.2f", scaleInp.getValue() * SLIDER_SCALE)
-        ));
+        scaleInp.addChangeListener(e -> dataVis.setText(String.format(Locale.ENGLISH, "%.2f", scaleInp.getValue() * SLIDER_SCALE)));
         innerPaddingInp.addChangeListener(e -> innerPaddingVis.setText(innerPaddingInp.getValue() + ""));
         outerPaddingInp.addChangeListener(e -> outerPaddingVis.setText(outerPaddingInp.getValue() + ""));
         windowRoundnessInp.addChangeListener(e -> roundnessVis.setText(windowRoundnessInp.getValue() + ""));
