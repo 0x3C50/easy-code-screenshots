@@ -1,7 +1,6 @@
 package me.x150.intellijcodescreenshots.ui;
 
 import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.NlsContexts;
@@ -13,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.JComponent;
 
 public class ConfigProvider implements SearchableConfigurable, Configurable.NoScroll {
-    Real panel;
+    SettingsUI panel;
     Project p;
 
     public ConfigProvider(Project p) {
@@ -32,7 +31,7 @@ public class ConfigProvider implements SearchableConfigurable, Configurable.NoSc
 
     @Override
     public @Nullable JComponent createComponent() {
-        panel = new Real();
+        panel = new SettingsUI();
         panel.init();
         return panel.getMyWholePanel();
     }
@@ -44,7 +43,7 @@ public class ConfigProvider implements SearchableConfigurable, Configurable.NoSc
     }
 
     @Override
-    public void apply() throws ConfigurationException {
+    public void apply() {
         OptionsServiceProvider service = p.getService(OptionsServiceProvider.class);
         service.loadState(panel.toState());
     }

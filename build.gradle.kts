@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "me.x150"
-version = "1.0-SNAPSHOT"
+version = "1.2"
 
 repositories {
     mavenCentral()

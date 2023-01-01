@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import java.util.Locale;
 
-public class Real {
+public class SettingsUI {
     private static final double SLIDER_SCALE = 0.25;
     private JPanel myWholePanel;
     private JSlider scaleInp;

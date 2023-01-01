@@ -1,22 +1,30 @@
 package me.x150.intellijcodescreenshots.action;
 
+import com.intellij.notification.NotificationAction;
 import com.intellij.notification.NotificationGroupManager;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.fileChooser.FileChooserFactory;
+import com.intellij.openapi.fileChooser.FileSaverDescriptor;
+import com.intellij.openapi.fileChooser.FileSaverDialog;
 import com.intellij.openapi.project.DumbAwareAction;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFileWrapper;
 import me.x150.intellijcodescreenshots.Plugin;
 import me.x150.intellijcodescreenshots.util.ScreenshotBuilder;
 import org.jetbrains.annotations.NotNull;
 
+import javax.imageio.ImageIO;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
 
 // Action to copy the selected code snippet
 public class CopyScreenshotAction extends DumbAwareAction {
@@ -63,8 +71,27 @@ public class CopyScreenshotAction extends DumbAwareAction {
                 .getNotificationGroup("Code Screenshots")
                 .createNotification("Image copied", NotificationType.INFORMATION)
                 .setTitle("Code screenshots")
-                .setImportant(false)
+                .addAction(NotificationAction.create("Save to File", anActionEvent -> saveToFileDialog(image, p)))
                 .notify(p);
+        }
+    }
+
+    void saveToFileDialog(BufferedImage image, Project p) {
+        FileSaverDescriptor fsd = new FileSaverDescriptor("Choose Image Location", "Select a location to save the screenshot to", "png");
+        FileSaverDialog saveFileDialog = FileChooserFactory.getInstance().createSaveFileDialog(fsd, p);
+        VirtualFileWrapper save = saveFileDialog.save("screenshot.png");
+        if (save == null) return;
+        File file = save.getFile();
+        try(FileOutputStream fos = new FileOutputStream(file)) {
+            ImageIO.write(image, "png", fos);
+        } catch (Throwable t) {
+            NotificationGroupManager.getInstance()
+                .getNotificationGroup("Code Screenshots")
+                .createNotification("Failed to write file: "+t.getClass().getSimpleName(), NotificationType.ERROR)
+                .setTitle("Code screenshots")
+                .setImportant(true)
+                .notify(p);
+            t.printStackTrace();
         }
     }
 

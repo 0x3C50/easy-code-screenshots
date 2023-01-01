@@ -13,17 +13,29 @@
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
-    <description><![CDATA[
-    <p>Adds a "Screenshot Selected Code" action, which creates a screenshot of the text currently selected and copies it to your clipboard.</p>
-    <p>To create a screenshot:</p>
-    <ol>
-        <li>Select the code segment to copy</li>
-        <li>Right click on the selection</li>
-        <li>Press "Screenshot Selected Code"</li>
-    </ol>
-    <p>Alternatively, you can press <code>ctrl + shift + S</code> to screenshot instead of right clicking<p>
-    <p>The screenshot being created can be configured, go to the <code>Editor | Code Screenshots</code> settings tab to view and change the configuration</p>
-  ]]></description>
+    <description>
+        <![CDATA[
+            <p>Adds a "Screenshot Selected Code" action, which copies an image of the currently selected text to the clipboard.</p>
+            <p>Creating a screenshot:</p>
+            <ol type="1">
+                <li>Select the code snippet to screenshot</li>
+                <li>Right click on the selection</li>
+                <li>Press "Screenshot Selected Code"</li>
+            </ol>
+            <p>Alternatively, you can press <code>Ctrl + Shift + S</code> to screenshot as well. This keybind can be configured.<p>
+            <p>The appearance of the screenshot can be configured in the <code>Editor | Code Screenshots</code> settings tab. The background color is dependent on the current IDE theme.</p>
+        ]]>
+    </description>
+
+    <change-notes>
+        <![CDATA[
+            <ul>
+                <li>Updated icon</li>
+                <li>Added "Save to File" option on screenshot notification</li>
+                <li>Fixed layout issue with "Scale" slider in settings</li>
+            </ul>
+        ]]>
+    </change-notes>
 
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
