@@ -136,6 +136,8 @@
         <properties>
           <maximum value="16"/>
           <minimum value="1"/>
+          <snapToTicks value="true"/>
+          <toolTipText value="Scale multiplier of the image"/>
           <value value="4"/>
         </properties>
       </component>
