@@ -1,11 +1,16 @@
 package me.x150.intellijcodescreenshots.ui;
 
+import com.intellij.ui.ColorChooser;
 import me.x150.intellijcodescreenshots.OptionsServiceProvider;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import java.awt.Color;
 import java.util.Locale;
 
 public class SettingsUI {
@@ -21,12 +26,26 @@ public class SettingsUI {
     private JSlider windowRoundnessInp;
     private JLabel roundnessVis;
     private JCheckBox showWindowControls;
+    private JFormattedTextField ABB8C3FormattedTextField;
+    private JButton editButton;
+    private Color initialBgColor = new Color(171, 184, 195);
 
     public void init() {
         scaleInp.addChangeListener(e -> dataVis.setText(String.format(Locale.ENGLISH, "%.2f", scaleInp.getValue() * SLIDER_SCALE)));
         innerPaddingInp.addChangeListener(e -> innerPaddingVis.setText(innerPaddingInp.getValue() + ""));
         outerPaddingInp.addChangeListener(e -> outerPaddingVis.setText(outerPaddingInp.getValue() + ""));
         windowRoundnessInp.addChangeListener(e -> roundnessVis.setText(windowRoundnessInp.getValue() + ""));
+        editButton.addActionListener(e -> {
+            initialBgColor = ColorChooser.chooseColor(editButton, "Choose a Color", initialBgColor, true);
+            updateJF();
+        });
+        updateJF();
+    }
+
+    private void updateJF() {
+        String fmted = String.format(Locale.ENGLISH, "A: %02.0f%%, R: %02.0f%%, G: %02.0f%%, B: %02.0f%%", initialBgColor.getAlpha() / 255f * 100, initialBgColor.getRed() / 255f * 100, initialBgColor.getGreen() / 255f * 100, initialBgColor.getBlue() / 255f * 100);
+        ABB8C3FormattedTextField.setText(fmted);
+        ABB8C3FormattedTextField.setForeground(new Color(initialBgColor.getRed(), initialBgColor.getGreen(), initialBgColor.getBlue()));
     }
 
     public OptionsServiceProvider.State toState() {
@@ -37,6 +56,7 @@ public class SettingsUI {
         s.outerPaddingVert = s.outerPaddingHoriz = outerPaddingInp.getValue();
         s.windowRoundness = windowRoundnessInp.getValue();
         s.showWindowControls = showWindowControls.isSelected();
+        s.backgroundColor = this.initialBgColor.getRGB();
         return s;
     }
 
@@ -51,5 +71,7 @@ public class SettingsUI {
         this.outerPaddingInp.setValue((int) Math.round(state.outerPaddingHoriz));
         this.windowRoundnessInp.setValue(state.windowRoundness);
         this.showWindowControls.setSelected(state.showWindowControls);
+        this.initialBgColor = state.getBackgroundColor();
+        updateJF();
     }
 }

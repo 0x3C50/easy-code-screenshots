@@ -9,7 +9,10 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@State(name = "CodeScreenshotsOptions", storages = { @Storage(StoragePathMacros.CACHE_FILE) })
+import java.awt.Color;
+import java.util.Objects;
+
+@State(name = "CodeScreenshotsOptions", storages = { @Storage(StoragePathMacros.WORKSPACE_FILE) })
 public class OptionsServiceProvider implements PersistentStateComponent<OptionsServiceProvider.State> {
     State state = new State();
 
@@ -35,6 +38,11 @@ public class OptionsServiceProvider implements PersistentStateComponent<OptionsS
         public double outerPaddingVert = 10;
         public int windowRoundness = 10;
         public boolean showWindowControls = true;
+        public int backgroundColor = 0xffabb8c3;
+
+        public Color getBackgroundColor() {
+            return new Color(backgroundColor);
+        }
 
         @Override
         public boolean equals(Object o) {
@@ -65,7 +73,10 @@ public class OptionsServiceProvider implements PersistentStateComponent<OptionsS
             if (windowRoundness != state.windowRoundness) {
                 return false;
             }
-            return showWindowControls == state.showWindowControls;
+            if (showWindowControls != state.showWindowControls) {
+                return false;
+            }
+            return backgroundColor == state.backgroundColor;
         }
 
         @Override
@@ -83,6 +94,7 @@ public class OptionsServiceProvider implements PersistentStateComponent<OptionsS
             result = 31 * result + (int) (temp ^ (temp >>> 32));
             result = 31 * result + windowRoundness;
             result = 31 * result + (showWindowControls ? 1 : 0);
+            result = 31 * result + backgroundColor;
             return result;
         }
     }

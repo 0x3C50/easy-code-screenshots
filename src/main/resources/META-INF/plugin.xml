@@ -30,9 +30,7 @@
     <change-notes>
         <![CDATA[
             <ul>
-                <li>Updated icon</li>
-                <li>Added "Save to File" option on screenshot notification</li>
-                <li>Fixed layout issue with "Scale" slider in settings</li>
+                <li>Added customization for the background color</li>
             </ul>
         ]]>
     </change-notes>

@@ -35,7 +35,6 @@ import static com.intellij.codeInsight.hint.EditorFragmentComponent.getBackgroun
 // Creates a screenshot of code
 // Partially lifted from https://github.com/amaembo/screenshoter
 public class ScreenshotBuilder {
-    static final JBColor emptyColor = new JBColor(new Color(171, 184, 195), new Color(171, 184, 195));
     static final JBColor green = new JBColor(new Color(43, 204, 31), new Color(43, 204, 31));
     static final JBColor yellow = new JBColor(new Color(204, 159, 31), new Color(204, 159, 31));
     static final JBColor red = new JBColor(new Color(204, 50, 31), new Color(204, 50, 31));
@@ -124,7 +123,7 @@ public class ScreenshotBuilder {
         int imgWidth = img.getWidth();
         int imgHeight = img.getHeight();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setPaint(emptyColor);
+        g.setPaint(state.getBackgroundColor());
         g.fillRect(0, 0, imgWidth, imgHeight);
         g.setPaint(backgroundColor);
         int windowRoundness = (int) (state.windowRoundness * state.scale);
@@ -164,22 +163,22 @@ public class ScreenshotBuilder {
         editor.getSettings().setCaretRowShown(false);
     }
 
-    long getSelectedSize() {
-        OptionsServiceProvider.State options = OptionsServiceProvider.getInstance(project).getState();
-        Rectangle2D rectangle = getSelectionRectangle();
-        double sizeX = rectangle.getWidth() + options.innerPadding * 2;
-        double sizeY = rectangle.getHeight() + options.innerPadding * 2;
-        return (long) (sizeX * sizeY * options.scale * options.scale);
-    }
+//    long getSelectedSize() {
+//        OptionsServiceProvider.State options = OptionsServiceProvider.getInstance(project).getState();
+//        Rectangle2D rectangle = getSelectionRectangle();
+//        double sizeX = rectangle.getWidth() + options.innerPadding * 2;
+//        double sizeY = rectangle.getHeight() + options.innerPadding * 2;
+//        return (long) (sizeX * sizeY * options.scale * options.scale);
+//    }
 
-    @NotNull
-    private Rectangle2D getSelectionRectangle() {
-        OptionsServiceProvider.State options = OptionsServiceProvider.getInstance(project).getState();
-        TextRange range = getRange(editor);
-        Document document = editor.getDocument();
-        String text = document.getText(range);
-        return getSelectionRectangle(range, text, options);
-    }
+//    @NotNull
+//    private Rectangle2D getSelectionRectangle() {
+//        OptionsServiceProvider.State options = OptionsServiceProvider.getInstance(project).getState();
+//        TextRange range = getRange(editor);
+//        Document document = editor.getDocument();
+//        String text = document.getText(range);
+//        return getSelectionRectangle(range, text, options);
+//    }
 
     @NotNull
     private Rectangle2D getSelectionRectangle(TextRange range, String text, OptionsServiceProvider.State options) {
