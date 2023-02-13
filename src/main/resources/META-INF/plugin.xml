@@ -31,6 +31,7 @@
         <![CDATA[
             <ul>
                 <li>Added customization for the background color</li>
+                <li>Fixed small bug in background color selector</li>
             </ul>
         ]]>
     </change-notes>

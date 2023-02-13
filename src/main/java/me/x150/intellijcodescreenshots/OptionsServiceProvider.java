@@ -41,7 +41,7 @@ public class OptionsServiceProvider implements PersistentStateComponent<OptionsS
         public int backgroundColor = 0xffabb8c3;
 
         public Color getBackgroundColor() {
-            return new Color(backgroundColor);
+            return new Color(backgroundColor, true);
         }
 
         @Override
