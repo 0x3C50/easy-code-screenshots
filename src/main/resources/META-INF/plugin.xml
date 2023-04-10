@@ -30,8 +30,8 @@
     <change-notes>
         <![CDATA[
             <ul>
-                <li>Added customization for the background color</li>
-                <li>Fixed small bug in background color selector</li>
+                <li>1.4.1: Fixed bug with newer build system causing idea to no longer generate forms boilerplate</li>
+                <li>1.4: Updated to IDEA 2023.1</li>
             </ul>
         ]]>
     </change-notes>

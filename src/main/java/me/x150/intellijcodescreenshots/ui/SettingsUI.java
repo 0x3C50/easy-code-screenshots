@@ -5,7 +5,6 @@ import me.x150.intellijcodescreenshots.OptionsServiceProvider;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JColorChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,9 +31,9 @@ public class SettingsUI {
 
     public void init() {
         scaleInp.addChangeListener(e -> dataVis.setText(String.format(Locale.ENGLISH, "%.2f", scaleInp.getValue() * SLIDER_SCALE)));
-        innerPaddingInp.addChangeListener(e -> innerPaddingVis.setText(innerPaddingInp.getValue() + ""));
-        outerPaddingInp.addChangeListener(e -> outerPaddingVis.setText(outerPaddingInp.getValue() + ""));
-        windowRoundnessInp.addChangeListener(e -> roundnessVis.setText(windowRoundnessInp.getValue() + ""));
+        innerPaddingInp.addChangeListener(e -> innerPaddingVis.setText(String.valueOf(innerPaddingInp.getValue())));
+        outerPaddingInp.addChangeListener(e -> outerPaddingVis.setText(String.valueOf(outerPaddingInp.getValue())));
+        windowRoundnessInp.addChangeListener(e -> roundnessVis.setText(String.valueOf(windowRoundnessInp.getValue())));
         editButton.addActionListener(e -> {
             initialBgColor = ColorChooser.chooseColor(editButton, "Choose a Color", initialBgColor, true);
             updateJF();
