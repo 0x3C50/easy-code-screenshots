@@ -30,6 +30,7 @@
     <change-notes>
         <![CDATA[
             <ul>
+                <li>1.4.2: Removed unnecessary version boundaries, ported to 2023.2 EAP</li>
                 <li>1.4.1: Fixed bug with newer build system causing idea to no longer generate forms boilerplate</li>
                 <li>1.4: Updated to IDEA 2023.1</li>
             </ul>

@@ -1,10 +1,10 @@
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.13.3"
+    id("org.jetbrains.intellij") version "1.14.2"
 }
 
 group = "me.x150"
-version = "1.4.1"
+version = "1.4.2"
 
 repositories {
     mavenCentral()
@@ -22,13 +22,8 @@ intellij {
 tasks {
     // Set the JVM compatibility versions
     withType<JavaCompile> {
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
-    }
-
-    patchPluginXml {
-        sinceBuild.set("213")
-        untilBuild.set("231.*")
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
     }
 
     signPlugin {
