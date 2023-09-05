@@ -30,6 +30,7 @@
     <change-notes>
         <![CDATA[
             <ul>
+                <li>1.4.3: Changed configuration storage to be global, updated to 2023.2.1</li>
                 <li>1.4.2: Removed unnecessary version boundaries, ported to 2023.2 EAP</li>
                 <li>1.4.1: Fixed bug with newer build system causing idea to no longer generate forms boilerplate</li>
                 <li>1.4: Updated to IDEA 2023.1</li>
@@ -53,8 +54,13 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <projectService serviceImplementation="me.x150.intellijcodescreenshots.OptionsServiceProvider"/>
+        <applicationService serviceImplementation="me.x150.intellijcodescreenshots.OptionsServiceProvider"/>
         <notificationGroup displayType="BALLOON" id="Code Screenshots" isLogByDefault="false"/>
-        <projectConfigurable groupId="editor" instance="me.x150.intellijcodescreenshots.ui.ConfigProvider" id="code-screenshots" displayName="Code Screenshots"/>
+        <applicationConfigurable
+            groupId="editor"
+            instance="me.x150.intellijcodescreenshots.ui.ConfigProvider"
+            id="code-screenshots"
+            displayName="Code Screenshots"/>
+<!--        <projectConfigurable groupId="editor" instance="me.x150.intellijcodescreenshots.ui.ConfigProvider" id="code-screenshots" displayName="Code Screenshots"/>-->
     </extensions>
 </idea-plugin>
