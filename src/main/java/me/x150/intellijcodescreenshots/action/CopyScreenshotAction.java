@@ -98,7 +98,7 @@ public class CopyScreenshotAction extends DumbAwareAction {
 									.setTitle("Code Screenshots")
 									.notify(p);
 
-							postToHost("Joshh_390uhpyxg06xj2oi5sup9p9yvezhwl", image, p);
+							postToHost(":)", image, p);
 						} catch (IOException ex) {
 							throw new RuntimeException(ex);
 						} catch (JSONException ex) {
