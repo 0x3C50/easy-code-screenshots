@@ -14,6 +14,8 @@ The screenshot will be copied to your clipboard
 
 ## Configuring
 To configure the screenshot, go to `Settings | Editor | Code Screenshots`. You can change the appearance of the screenshot there.
+In the same section, there is a section called "API Key". Paste your [api key](https://e-z.host/dash/settings) there.
+
 
 ## WARNING
 Screenshotting large amounts of code at once with a high Image Scale will cause memory issues. If you need to screenshot larger amounts of code, turn down the Image Scale first.
