@@ -28,7 +28,7 @@ public class SettingsUI {
 
 	static String apiKey;
 	public void init() {
-
+		apiKeyField.addActionListener(e -> apiKey = apiKeyField.getText());
 		scaleInp.addChangeListener(e -> dataVis.setText(String.format(Locale.ENGLISH, "%.2f", scaleInp.getValue() * SLIDER_SCALE)));
 		innerPaddingInp.addChangeListener(e -> innerPaddingVis.setText(String.valueOf(innerPaddingInp.getValue())));
 		outerPaddingInp.addChangeListener(e -> outerPaddingVis.setText(String.valueOf(outerPaddingInp.getValue())));
@@ -69,7 +69,7 @@ public class SettingsUI {
 	}
 
 	public void fromState(OptionsServiceProvider.State state) {
-		apiKey = "";
+
 		this.scaleInp.setValue((int) Math.round(state.scale / SLIDER_SCALE));
 		this.removeIndent.setSelected(state.removeIndentation);
 		this.innerPaddingInp.setValue((int) Math.round(state.innerPadding));

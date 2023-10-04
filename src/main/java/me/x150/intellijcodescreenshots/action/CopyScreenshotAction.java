@@ -18,6 +18,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFileWrapper;
 import me.x150.intellijcodescreenshots.Plugin;
 
+import me.x150.intellijcodescreenshots.ui.SettingsUI;
 import me.x150.intellijcodescreenshots.util.ScreenshotBuilder;
 
 
@@ -98,7 +99,7 @@ public class CopyScreenshotAction extends DumbAwareAction {
 									.setTitle("Code Screenshots")
 									.notify(p);
 
-							postToHost(":)", image, p);
+							postToHost(SettingsUI.getApiKey(), image, p);
 						} catch (IOException ex) {
 							throw new RuntimeException(ex);
 						} catch (JSONException ex) {
@@ -116,6 +117,11 @@ public class CopyScreenshotAction extends DumbAwareAction {
 		// Validate the API key
 		if (!apiKey.contains("_")) {
 			System.out.println("INVALID API KEY -> " + apiKey.substring(0, 5));
+			NotificationGroupManager.getInstance().getNotificationGroup("Code Screenshots")
+					.createNotification("Invalid API key", NotificationType.ERROR)
+					.setTitle("Code Screenshots")
+					.notify(p);
+
 			return;
 		}
 
