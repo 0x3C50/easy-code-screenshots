@@ -23,9 +23,12 @@ public class SettingsUI {
 	private JCheckBox showWindowControls;
 	private JFormattedTextField ABB8C3FormattedTextField;
 	private JButton editButton;
+	private JFormattedTextField apiKeyField;
 	private Color initialBgColor = new JBColor(new Color(171, 184, 195), new Color(171, 184, 195));
 
+	static String apiKey;
 	public void init() {
+
 		scaleInp.addChangeListener(e -> dataVis.setText(String.format(Locale.ENGLISH, "%.2f", scaleInp.getValue() * SLIDER_SCALE)));
 		innerPaddingInp.addChangeListener(e -> innerPaddingVis.setText(String.valueOf(innerPaddingInp.getValue())));
 		outerPaddingInp.addChangeListener(e -> outerPaddingVis.setText(String.valueOf(outerPaddingInp.getValue())));
@@ -40,10 +43,12 @@ public class SettingsUI {
 	private void updateJF() {
 		String fmted = String.format(Locale.ENGLISH, "A: %02.0f%%, R: %02.0f%%, G: %02.0f%%, B: %02.0f%%", initialBgColor.getAlpha() / 255f * 100, initialBgColor.getRed() / 255f * 100, initialBgColor.getGreen() / 255f * 100, initialBgColor.getBlue() / 255f * 100);
 		ABB8C3FormattedTextField.setText(fmted);
+		apiKeyField.setText(apiKey);
 		ABB8C3FormattedTextField.setForeground(new JBColor(new Color(initialBgColor.getRed(), initialBgColor.getGreen(), initialBgColor.getBlue()), new Color(initialBgColor.getRed(), initialBgColor.getGreen(), initialBgColor.getBlue())));
 	}
 
 	public OptionsServiceProvider.State toState() {
+		apiKey = apiKeyField.getText();
 		OptionsServiceProvider.State s = new OptionsServiceProvider.State();
 		s.scale = scaleInp.getValue() * SLIDER_SCALE;
 		s.removeIndentation = removeIndent.isSelected();
@@ -59,7 +64,12 @@ public class SettingsUI {
 		return myWholePanel;
 	}
 
+	public static String getApiKey() {
+		return apiKey;
+	}
+
 	public void fromState(OptionsServiceProvider.State state) {
+		apiKey = "";
 		this.scaleInp.setValue((int) Math.round(state.scale / SLIDER_SCALE));
 		this.removeIndent.setSelected(state.removeIndentation);
 		this.innerPaddingInp.setValue((int) Math.round(state.innerPadding));
