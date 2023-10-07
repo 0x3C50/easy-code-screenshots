@@ -112,8 +112,6 @@ public class CopyScreenshotAction extends DumbAwareAction {
 
 	private void postToHost(String apiKey, BufferedImage image, Project p) throws IOException, JSONException {
 
-		System.out.println(image.getWidth() + " " + image.getHeight());
-
 		// Validate the API key
 		if (!apiKey.contains("_")) {
 			System.out.println("INVALID API KEY -> " + apiKey.substring(0, 5));
@@ -154,8 +152,6 @@ public class CopyScreenshotAction extends DumbAwareAction {
 			// Write the image data
 			ImageIO.write(image, "png", os);
 			os.flush();
-
-			// End of file part
 			writer.append("\r\n");
 
 			// End of multipart request
@@ -165,7 +161,6 @@ public class CopyScreenshotAction extends DumbAwareAction {
 		System.out.println("Sent file data");
 
 		connection.connect();
-		System.out.println(connection.getResponseMessage());
 
 		// Get response from the API
 		int responseCode = connection.getResponseCode();
