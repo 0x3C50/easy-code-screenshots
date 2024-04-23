@@ -99,6 +99,7 @@ public class CopyScreenshotAction extends DumbAwareAction {
 					.setImportant(true)
 					.notify(p);
 			t.printStackTrace();
+
 		}
 	}
 

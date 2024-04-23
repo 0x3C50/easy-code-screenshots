@@ -8,7 +8,7 @@
     <name>Easy Code Screenshots</name>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor email="constantin.chris10@gmail.com" url="https://0x150.cf">0x150</vendor>
+    <vendor email="constantin.chris10@gmail.com">0x150</vendor>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
@@ -30,6 +30,9 @@
     <change-notes>
         <![CDATA[
             <ul>
+                <li>1.4.6: Fixed a bug where character bounds were determined incorrectly</li>
+                <li>1.4.5: Updated to 2024.1</li>
+                <li>1.4.4: Updated to 2023.3</li>
                 <li>1.4.3: Changed configuration storage to be global, updated to 2023.2.1</li>
                 <li>1.4.2: Removed unnecessary version boundaries, ported to 2023.2 EAP</li>
                 <li>1.4.1: Fixed bug with newer build system causing idea to no longer generate forms boilerplate</li>
@@ -46,7 +49,7 @@
         <action id="me.x150.intellijcodescreenshots.action.CopyScreenshotAction"
                 class="me.x150.intellijcodescreenshots.action.CopyScreenshotAction" text="Screenshot Selected Code"
                 description="Screenshots the selected code snippet">
-            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="CopyAsRichText"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="CopyAsPlainText"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl S"/>
         </action>
     </actions>

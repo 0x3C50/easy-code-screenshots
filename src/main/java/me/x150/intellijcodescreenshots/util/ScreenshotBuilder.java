@@ -27,7 +27,6 @@ public class ScreenshotBuilder {
 	static final JBColor green = new JBColor(new Color(43, 204, 31), new Color(43, 204, 31));
 	static final JBColor yellow = new JBColor(new Color(204, 159, 31), new Color(204, 159, 31));
 	static final JBColor red = new JBColor(new Color(204, 50, 31), new Color(204, 50, 31));
-	private static final Pattern EMPTY_SUFFIX = Pattern.compile("\n\\s+$");
 	@NotNull
 	private final Editor editor;
 
@@ -131,7 +130,8 @@ public class ScreenshotBuilder {
 			}
 		}
 		g.translate(paddingX, state.showWindowControls ? outerPaddingVertMapped + preferredPaddingTopWithIndicators : paddingY);
-		g.clipRect(0, 0, scaledWidth, scaledHeight);
+		 g.clipRect(0, 0, scaledWidth, scaledHeight);
+
 		g.transform(at);
 		contentComponent.paint(g);
 		return img;
@@ -172,12 +172,45 @@ public class ScreenshotBuilder {
 		int end = range.getEndOffset();
 		Rectangle2D r = new Rectangle2D.Double();
 
-		for (int i = start; i <= end; i++) {
-			if (options.removeIndentation && EMPTY_SUFFIX.matcher(text.substring(0, Math.min(i - start + 1, text.length()))).find()) {
+		for (int i = start; i < end; i++) {
+			if (options.removeIndentation && Character.isWhitespace(text.charAt(i-start))) {
+				// if this character is a whitespace and we're removing indentation, ignore it
+				// -> don't add the position it's in to the rect we screenshot
+				// the rect will be expanded if something else expands it after this whitespace
 				continue;
 			}
-			VisualPosition pos = editor.offsetToVisualPosition(i);
-			Point2D point = editor.visualPositionToXY(pos);
+			// offsetToXY gives us the starting position of the character at i
+			// -> the top left coordinate of the character
+			// to add the character fully, we need to make sure the top right / bottom right point is also in the range
+			// -> get the position of the top left of the *next* character WITHOUT soft wrapping to get the top left position of the theoretical subsequent character
+
+			/*
+			Position of character 0
+			│
+			│             │Position of character 0+1
+			▼             ▼
+			┌───────────┐ ┌─────┐
+			│     xx    │ │xxx  │
+			│    xx x   │ │x xx │
+			│    x   xx │ │x  x │
+			│  xxxxxxxx │ │xxxxx│
+			│ xx      x │ │x   x│
+			│x        xx│ │xxxxx│
+			└───────────┘ └─────┘
+						 ▲
+						 │
+						 Gap for illustrative purposes. Does not exist
+
+			│             │
+			└─────────────┘
+			Full range of character 0
+			Both points (and thus this range) added to rect
+			 */
+
+			Point point = editor.offsetToXY(i, false, false);
+			includePoint(r, point);
+			includePoint(r, new Point2D.Double(point.getX(), point.getY() + editor.getLineHeight()));
+			point = editor.offsetToXY(i+1, false, true);
 			includePoint(r, point);
 			includePoint(r, new Point2D.Double(point.getX(), point.getY() + editor.getLineHeight()));
 		}
