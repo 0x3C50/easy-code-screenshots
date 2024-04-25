@@ -130,7 +130,7 @@ public class ScreenshotBuilder {
 			}
 		}
 		g.translate(paddingX, state.showWindowControls ? outerPaddingVertMapped + preferredPaddingTopWithIndicators : paddingY);
-		 g.clipRect(0, 0, scaledWidth, scaledHeight);
+		g.clipRect(0, 0, scaledWidth, scaledHeight);
 
 		g.transform(at);
 		contentComponent.paint(g);
