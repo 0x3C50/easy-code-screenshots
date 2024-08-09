@@ -30,6 +30,7 @@
     <change-notes>
         <![CDATA[
             <ul>
+                <li>1.4.7: Updated to 2024.1</li>
                 <li>1.4.6: Fixed a bug where character bounds were determined incorrectly</li>
                 <li>1.4.5: Updated to 2024.1</li>
                 <li>1.4.4: Updated to 2023.3</li>
