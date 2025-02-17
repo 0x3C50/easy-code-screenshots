@@ -49,6 +49,7 @@ public class CopyScreenshotAction extends DumbAwareAction {
 			return;
 		}
 		if (!editor.getSelectionModel().hasSelection()) {
+			// No selection, tell user
 			Plugin.showError(p, "Select code to screenshot first");
 			return;
 		}
@@ -84,29 +85,19 @@ public class CopyScreenshotAction extends DumbAwareAction {
 				}
 			}, (clipboard, contents) -> {
 			});
-
-			String defaultFileName = fileName != null
-					? fileName.replaceFirst("[.][^.]+$", "") + "_screenshot.png"
-					: "screenshot.png";
-
 			NotificationGroupManager.getInstance()
 					.getNotificationGroup("Code Screenshots")
 					.createNotification("Image copied", NotificationType.INFORMATION)
 					.setTitle("Code screenshots")
-					.addAction(NotificationAction.create("Save to File",
-							anActionEvent -> saveToFileDialog(image, p, defaultFileName)))
+					.addAction(NotificationAction.create("Save to File", anActionEvent -> saveToFileDialog(image, p)))
 					.notify(p);
 		}
 	}
 
-	void saveToFileDialog(BufferedImage image, Project p, String defaultFileName) {
-		FileSaverDescriptor fsd = new FileSaverDescriptor(
-				"Choose Image Location",
-				"Select a location to save the screenshot to",
-				"png"
-		);
+	void saveToFileDialog(BufferedImage image, Project p) {
+		FileSaverDescriptor fsd = new FileSaverDescriptor("Choose Image Location", "Select a location to save the screenshot to", "png");
 		FileSaverDialog saveFileDialog = FileChooserFactory.getInstance().createSaveFileDialog(fsd, p);
-		VirtualFileWrapper save = saveFileDialog.save(defaultFileName);
+		VirtualFileWrapper save = saveFileDialog.save("screenshot.png");
 		if (save == null) return;
 		File file = save.getFile();
 		try (FileOutputStream fos = new FileOutputStream(file)) {
@@ -114,17 +105,16 @@ public class CopyScreenshotAction extends DumbAwareAction {
 		} catch (Throwable t) {
 			NotificationGroupManager.getInstance()
 					.getNotificationGroup("Code Screenshots")
-					.createNotification(
-							"Failed to write file: " + t.getClass().getSimpleName(),
-							NotificationType.ERROR
-					)
+					.createNotification("Failed to write file: " + t.getClass().getSimpleName(), NotificationType.ERROR)
 					.setTitle("Code screenshots")
 					.setImportant(true)
 					.notify(p);
 			t.printStackTrace();
+
 		}
 	}
 
+	// Dictates whether the "Screenshot Selected Code" action should be enabled, in the right click menu or the keybinding
 	@Override
 	public void update(@NotNull AnActionEvent e) {
 		Project project = e.getProject();
@@ -134,5 +124,6 @@ public class CopyScreenshotAction extends DumbAwareAction {
 		DataContext context = e.getDataContext();
 		Editor editor = PlatformDataKeys.EDITOR.getData(context);
 		e.getPresentation().setEnabled(editor != null && editor.getSelectionModel().hasSelection());
+
 	}
 }
