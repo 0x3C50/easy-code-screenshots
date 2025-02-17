@@ -29,9 +29,11 @@ public class ScreenshotBuilder {
 	static final JBColor red = new JBColor(new Color(204, 50, 31), new Color(204, 50, 31));
 	@NotNull
 	private final Editor editor;
+	private final String fileName;
 
-	public ScreenshotBuilder(@NotNull Editor editor) {
+	public ScreenshotBuilder(@NotNull Editor editor, String fileName) {
 		this.editor = editor;
+		this.fileName = fileName;
 	}
 
 	private static TextRange getRange(Editor editor) {
@@ -96,44 +98,76 @@ public class ScreenshotBuilder {
 		int paddingX = innerPadding + outerPaddingHoriMapped;
 		int paddingY = innerPadding + outerPaddingVertMapped;
 
-		double windowControlsHeightWithPadding = windowControlsPadding + indicatorDimensions + windowControlsPadding;
-		double preferredPaddingTopWithIndicators = Math.max(windowControlsHeightWithPadding, innerPadding);
+		Font fileNameFont = new Font("SansSerif", Font.PLAIN, (int)(13 * state.scale));
+		FontMetrics metrics = contentComponent.getFontMetrics(fileNameFont);
+		int fileNameHeight = metrics.getHeight();
 
-		@SuppressWarnings("UndesirableClassUsage") BufferedImage img = new BufferedImage((int) (outerPaddingHoriMapped + innerPadding + width * scale + innerPadding + outerPaddingHoriMapped),
-				(int) (outerPaddingVertMapped + (state.showWindowControls ? preferredPaddingTopWithIndicators : innerPadding) + height * scale + innerPadding + outerPaddingVertMapped),
-				BufferedImage.TYPE_INT_ARGB);
+		double windowControlsHeightWithPadding = windowControlsPadding + indicatorDimensions + windowControlsPadding;
+		double titleBarHeight = Math.max(windowControlsHeightWithPadding, fileNameHeight + windowControlsPadding * 2);
+		double preferredPaddingTopWithIndicators = Math.max(titleBarHeight, innerPadding);
+
+		@SuppressWarnings("UndesirableClassUsage")
+		BufferedImage img = new BufferedImage(
+				(int) (outerPaddingHoriMapped + innerPadding + width * scale + innerPadding + outerPaddingHoriMapped),
+				(int) (outerPaddingVertMapped + ((state.showWindowControls||state.showFileName) ? preferredPaddingTopWithIndicators : innerPadding) + height * scale + innerPadding + outerPaddingVertMapped),
+				BufferedImage.TYPE_INT_ARGB
+		);
+
 		Graphics2D g = img.createGraphics();
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
 		int scaledWidth = (int) (width * scale);
 		int scaledHeight = (int) (height * scale);
 		int imgWidth = img.getWidth();
 		int imgHeight = img.getHeight();
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
 		g.setPaint(state.getBackgroundColor());
 		g.fillRect(0, 0, imgWidth, imgHeight);
 		g.setPaint(backgroundColor);
 		int windowRoundness = (int) (state.windowRoundness * state.scale);
-		g.fillRoundRect(outerPaddingHoriMapped,
+		g.fillRoundRect(
+				outerPaddingHoriMapped,
 				outerPaddingVertMapped,
 				imgWidth - outerPaddingHoriMapped * 2,
 				imgHeight - outerPaddingVertMapped * 2,
 				windowRoundness,
-				windowRoundness);
+				windowRoundness
+		);
+
 		double xOffset = 0;
 		if (state.showWindowControls) {
 			for (JBColor jbColor : new JBColor[]{red, yellow, green}) {
 				g.setPaint(jbColor);
-				g.fillOval((int) (outerPaddingHoriMapped + windowControlsPadding + xOffset),
-						(int) (outerPaddingVertMapped + windowControlsPadding),
+				g.fillOval(
+						(int) (outerPaddingHoriMapped + windowControlsPadding + xOffset),
+						(int) (outerPaddingVertMapped + (titleBarHeight - indicatorDimensions) / 2),
 						(int) indicatorDimensions,
-						(int) indicatorDimensions);
+						(int) indicatorDimensions
+				);
 				xOffset += indicatorDimensions + windowControlsPadding;
 			}
 		}
-		g.translate(paddingX, state.showWindowControls ? outerPaddingVertMapped + preferredPaddingTopWithIndicators : paddingY);
-		g.clipRect(0, 0, scaledWidth, scaledHeight);
+		if (state.showFileName && fileName != null && !fileName.isEmpty()) {
+			g.setFont(fileNameFont);
+			g.setPaint(new Color(220, 220, 220));
 
+			int textY = (int) (outerPaddingVertMapped + (titleBarHeight + metrics.getAscent() - metrics.getDescent()) / 2);
+			int textX = (int) (outerPaddingHoriMapped + xOffset + windowControlsPadding);
+
+			g.setPaint(new Color(0, 0, 0, 50));
+			g.drawString(fileName, textX + 1, textY + 1);
+
+			g.setPaint(new Color(220, 220, 220));
+			g.drawString(fileName, textX, textY);
+		}
+
+		g.translate(paddingX, (state.showWindowControls||state.showFileName) ? outerPaddingVertMapped + preferredPaddingTopWithIndicators : paddingY);
+		g.clipRect(0, 0, scaledWidth, scaledHeight);
 		g.transform(at);
 		contentComponent.paint(g);
+
+		g.dispose();
 		return img;
 	}
 
