@@ -23,6 +23,7 @@ public class SettingsUI {
 	private JCheckBox showWindowControls;
 	private JFormattedTextField ABB8C3FormattedTextField;
 	private JButton editButton;
+	private JCheckBox showFileName;
 	private Color initialBgColor = new JBColor(new Color(171, 184, 195), new Color(171, 184, 195));
 
 	public void init() {
@@ -51,6 +52,7 @@ public class SettingsUI {
 		s.outerPaddingVert = s.outerPaddingHoriz = outerPaddingInp.getValue();
 		s.windowRoundness = windowRoundnessInp.getValue();
 		s.showWindowControls = showWindowControls.isSelected();
+		s.showFileName = showFileName.isSelected();
 		s.backgroundColor = this.initialBgColor.getRGB();
 		return s;
 	}
@@ -66,6 +68,7 @@ public class SettingsUI {
 		this.outerPaddingInp.setValue((int) Math.round(state.outerPaddingHoriz));
 		this.windowRoundnessInp.setValue(state.windowRoundness);
 		this.showWindowControls.setSelected(state.showWindowControls);
+		this.showFileName.setSelected(state.showFileName);
 		this.initialBgColor = state.getBackgroundColor();
 		updateJF();
 	}

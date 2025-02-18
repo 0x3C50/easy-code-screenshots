@@ -39,6 +39,7 @@ public class OptionsServiceProvider implements PersistentStateComponent<OptionsS
 		public int windowRoundness = 10;
 		public boolean showWindowControls = true;
 		public int backgroundColor = 0xffabb8c3;
+		public boolean showFileName = true;
 
 		public Color getBackgroundColor() {
 			return new JBColor(new Color(backgroundColor, true), new Color(backgroundColor, true));
@@ -76,6 +77,10 @@ public class OptionsServiceProvider implements PersistentStateComponent<OptionsS
 			if (showWindowControls != state.showWindowControls) {
 				return false;
 			}
+			if (showFileName != state.showFileName)
+			{
+				return false;
+			}
 			return backgroundColor == state.backgroundColor;
 		}
 
@@ -94,6 +99,7 @@ public class OptionsServiceProvider implements PersistentStateComponent<OptionsS
 			result = 31 * result + (int) (temp ^ temp >>> 32);
 			result = 31 * result + windowRoundness;
 			result = 31 * result + (showWindowControls ? 1 : 0);
+			result = 31 * result + (showFileName ? 1 : 0);
 			result = 31 * result + backgroundColor;
 			return result;
 		}

@@ -11,8 +11,10 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileChooser.FileChooserFactory;
 import com.intellij.openapi.fileChooser.FileSaverDescriptor;
 import com.intellij.openapi.fileChooser.FileSaverDialog;
+import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.DumbAwareAction;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileWrapper;
 import me.x150.intellijcodescreenshots.Plugin;
 import me.x150.intellijcodescreenshots.util.ScreenshotBuilder;
@@ -27,7 +29,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 
-// Action to copy the selected code snippet
 public class CopyScreenshotAction extends DumbAwareAction {
 
 	@Override
@@ -52,7 +53,17 @@ public class CopyScreenshotAction extends DumbAwareAction {
 			Plugin.showError(p, "Select code to screenshot first");
 			return;
 		}
-		ScreenshotBuilder sb = new ScreenshotBuilder(editor);
+
+		// Get the current file name
+		String fileName = null;
+		VirtualFile currentFile = FileEditorManager.getInstance(p).getSelectedFiles().length > 0
+				? FileEditorManager.getInstance(p).getSelectedFiles()[0]
+				: null;
+		if (currentFile != null) {
+			fileName = currentFile.getName();
+		}
+
+		ScreenshotBuilder sb = new ScreenshotBuilder(editor, fileName);
 		BufferedImage image = sb.createImage();
 		if (image != null) {
 			Clipboard cp = Toolkit.getDefaultToolkit().getSystemClipboard();
