@@ -4,6 +4,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.*;
 import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.ui.Gray;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.scale.JBUIScale;
 import me.x150.intellijcodescreenshots.OptionsServiceProvider;
@@ -17,7 +18,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.util.regex.Pattern;
 
 import static com.intellij.codeInsight.hint.EditorFragmentComponent.getBackgroundColor;
 
@@ -109,7 +109,7 @@ public class ScreenshotBuilder {
 		@SuppressWarnings("UndesirableClassUsage")
 		BufferedImage img = new BufferedImage(
 				(int) (outerPaddingHoriMapped + innerPadding + width * scale + innerPadding + outerPaddingHoriMapped),
-				(int) (outerPaddingVertMapped + ((state.showWindowControls||state.showFileName) ? preferredPaddingTopWithIndicators : innerPadding) + height * scale + innerPadding + outerPaddingVertMapped),
+				(int) (outerPaddingVertMapped + (state.showWindowControls||state.showFileName ? preferredPaddingTopWithIndicators : innerPadding) + height * scale + innerPadding + outerPaddingVertMapped),
 				BufferedImage.TYPE_INT_ARGB
 		);
 
@@ -150,15 +150,15 @@ public class ScreenshotBuilder {
 		}
 		if (state.showFileName && fileName != null && !fileName.isEmpty()) {
 			g.setFont(fileNameFont);
-			g.setPaint(new Color(220, 220, 220));
+			g.setPaint(Gray._220);
 
 			int textY = (int) (outerPaddingVertMapped + (titleBarHeight + metrics.getAscent() - metrics.getDescent()) / 2);
 			int textX = (int) (outerPaddingHoriMapped + xOffset + windowControlsPadding);
 
-			g.setPaint(new Color(0, 0, 0, 50));
+			g.setPaint(new JBColor(new Color(0, 0, 0, 50), new Color(0, 0, 0, 50)));
 			g.drawString(fileName, textX + 1, textY + 1);
 
-			g.setPaint(new Color(220, 220, 220));
+			g.setPaint(Gray._220);
 			g.drawString(fileName, textX, textY);
 		}
 
@@ -182,23 +182,6 @@ public class ScreenshotBuilder {
 		}
 		editor.getSettings().setCaretRowShown(false);
 	}
-
-//    long getSelectedSize() {
-//        OptionsServiceProvider.State options = OptionsServiceProvider.getInstance(project).getState();
-//        Rectangle2D rectangle = getSelectionRectangle();
-//        double sizeX = rectangle.getWidth() + options.innerPadding * 2;
-//        double sizeY = rectangle.getHeight() + options.innerPadding * 2;
-//        return (long) (sizeX * sizeY * options.scale * options.scale);
-//    }
-
-//    @NotNull
-//    private Rectangle2D getSelectionRectangle() {
-//        OptionsServiceProvider.State options = OptionsServiceProvider.getInstance(project).getState();
-//        TextRange range = getRange(editor);
-//        Document document = editor.getDocument();
-//        String text = document.getText(range);
-//        return getSelectionRectangle(range, text, options);
-//    }
 
 	@NotNull
 	private Rectangle2D getSelectionRectangle(TextRange range, String text, OptionsServiceProvider.State options) {

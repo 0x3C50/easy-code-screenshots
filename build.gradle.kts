@@ -1,10 +1,10 @@
 plugins {
     id("java")
-    id("org.jetbrains.intellij.platform") version "2.0.1"
+    id("org.jetbrains.intellij.platform") version "2.2.1"
 }
 
 group = "me.x150"
-version = "1.4.8"
+version = "1.4.9"
 
 repositories {
     mavenCentral()
@@ -15,14 +15,13 @@ repositories {
 
 dependencies {
     intellijPlatform {
-        instrumentationTools()
-        intellijIdeaCommunity("2024.2")
+        intellijIdeaCommunity("2024.3")
     }
 }
 
 tasks {
     patchPluginXml {
-        sinceBuild.set("242")
+        sinceBuild.set("243")
         untilBuild.set(provider {null})
     }
 

@@ -8,7 +8,6 @@ import com.intellij.openapi.components.Storage;
 import com.intellij.ui.JBColor;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 
@@ -21,7 +20,7 @@ public class OptionsServiceProvider implements PersistentStateComponent<OptionsS
 	}
 
 	@Override
-	public @Nullable OptionsServiceProvider.State getState() {
+	public OptionsServiceProvider.State getState() {
 		return state;
 	}
 
@@ -87,16 +86,11 @@ public class OptionsServiceProvider implements PersistentStateComponent<OptionsS
 		@Override
 		public int hashCode() {
 			int result;
-			long temp;
-			temp = Double.doubleToLongBits(scale);
-			result = (int) (temp ^ temp >>> 32);
+			result = Double.hashCode(scale);
 			result = 31 * result + (removeIndentation ? 1 : 0);
-			temp = Double.doubleToLongBits(innerPadding);
-			result = 31 * result + (int) (temp ^ temp >>> 32);
-			temp = Double.doubleToLongBits(outerPaddingHoriz);
-			result = 31 * result + (int) (temp ^ temp >>> 32);
-			temp = Double.doubleToLongBits(outerPaddingVert);
-			result = 31 * result + (int) (temp ^ temp >>> 32);
+			result = 31 * result + Double.hashCode(innerPadding);
+			result = 31 * result + Double.hashCode(outerPaddingHoriz);
+			result = 31 * result + Double.hashCode(outerPaddingVert);
 			result = 31 * result + windowRoundness;
 			result = 31 * result + (showWindowControls ? 1 : 0);
 			result = 31 * result + (showFileName ? 1 : 0);

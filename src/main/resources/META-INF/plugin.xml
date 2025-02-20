@@ -30,6 +30,7 @@
     <change-notes>
         <![CDATA[
             <ul>
+                <li>1.4.9: Added option to show the file name (thanks @RotzRohr)</li>
                 <li>1.4.8: Updated to 2024.3</li>
                 <li>1.4.7: Updated to 2024.2</li>
                 <li>1.4.6: Fixed a bug where character bounds were determined incorrectly</li>
