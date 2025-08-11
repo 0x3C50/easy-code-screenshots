@@ -28,6 +28,8 @@ import java.awt.datatransfer.Transferable;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CopyScreenshotAction extends DumbAwareAction {
 
@@ -55,13 +57,10 @@ public class CopyScreenshotAction extends DumbAwareAction {
 		}
 
 		// Get the current file name
-		String fileName = null;
 		VirtualFile currentFile = FileEditorManager.getInstance(p).getSelectedFiles().length > 0
 				? FileEditorManager.getInstance(p).getSelectedFiles()[0]
 				: null;
-		if (currentFile != null) {
-			fileName = currentFile.getName();
-		}
+		String fileName = currentFile != null ? currentFile.getName() : null;
 
 		ScreenshotBuilder sb = new ScreenshotBuilder(editor, fileName);
 		BufferedImage image = sb.createImage();
@@ -89,15 +88,16 @@ public class CopyScreenshotAction extends DumbAwareAction {
 					.getNotificationGroup("Code Screenshots")
 					.createNotification("Image copied", NotificationType.INFORMATION)
 					.setTitle("Code screenshots")
-					.addAction(NotificationAction.create("Save to File", anActionEvent -> saveToFileDialog(image, p)))
+					.addAction(NotificationAction.create("Save to File", anActionEvent -> saveToFileDialog(image, p, fileName)))
 					.notify(p);
 		}
 	}
 
-	void saveToFileDialog(BufferedImage image, Project p) {
+	void saveToFileDialog(BufferedImage image, Project p, String fileName) {
 		FileSaverDescriptor fsd = new FileSaverDescriptor("Choose Image Location", "Select a location to save the screenshot to", "png");
 		FileSaverDialog saveFileDialog = FileChooserFactory.getInstance().createSaveFileDialog(fsd, p);
-		VirtualFileWrapper save = saveFileDialog.save("screenshot.png");
+		String date = new SimpleDateFormat( "yyyyMMddHHmmss").format(new Date());
+		VirtualFileWrapper save = saveFileDialog.save((fileName == null ? "screenshot" : fileName + date) + ".png");
 		if (save == null) return;
 		File file = save.getFile();
 		try (FileOutputStream fos = new FileOutputStream(file)) {
