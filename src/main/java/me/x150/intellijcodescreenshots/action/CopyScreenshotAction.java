@@ -97,7 +97,7 @@ public class CopyScreenshotAction extends DumbAwareAction {
 		FileSaverDescriptor fsd = new FileSaverDescriptor("Choose Image Location", "Select a location to save the screenshot to", "png");
 		FileSaverDialog saveFileDialog = FileChooserFactory.getInstance().createSaveFileDialog(fsd, p);
 		String date = new SimpleDateFormat( "yyyyMMddHHmmss").format(new Date());
-		VirtualFileWrapper save = saveFileDialog.save((fileName == null ? "screenshot" : fileName + date) + ".png");
+		VirtualFileWrapper save = saveFileDialog.save(String.format("%s-%s.png", fileName == null ? "screenshot" : fileName, date));
 		if (save == null) return;
 		File file = save.getFile();
 		try (FileOutputStream fos = new FileOutputStream(file)) {
